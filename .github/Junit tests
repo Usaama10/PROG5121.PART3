@@ -1,0 +1,85 @@
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ *
+ * @author Asus V5
+ */
+public class Junit {
+    
+    public Junit() {
+    }
+
+    @org.junit.jupiter.api.BeforeAll
+    public static void setUpClass() throws Exception {
+    }
+
+    @org.junit.jupiter.api.AfterAll
+    public static void tearDownClass() throws Exception {
+    }
+
+    @org.junit.jupiter.api.BeforeEach
+    public void setUp() throws Exception {
+    }
+
+    @org.junit.jupiter.api.AfterEach
+    public void tearDown() throws Exception {
+    }
+    
+    @BeforeAll
+    public static void setUpClass() {
+    }
+    
+    @AfterAll
+    public static void tearDownClass() {
+    }
+    
+    @BeforeEach
+    public void setUp() {
+    }
+    
+    @AfterEach
+    public void tearDown() {
+    }
+
+   import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+class TaskTest {
+    @Test
+    void testDeveloperArray() {
+        Task taskManager = new Task();
+        taskManager.addTask("Mike Smith", "Create Login", 5, "To Do");
+        taskManager.addTask("Edward Harrington", "Create Add Features", 8, "Doing");
+        taskManager.addTask("Samantha Paulson", "Create Reports", 2, "Done");
+        taskManager.addTask("Glenda Oberholzer", "Add Arrays", 11, "To Do");
+
+        assertEquals("Mike Smith", taskManager.developers.get(0));
+        assertEquals("Edward Harrington", taskManager.developers.get(1));
+    }
+
+    @Test
+    void testLongestDurationTask() {
+        Task taskManager = new Task();
+        taskManager.addTask("Glenda Oberholzer", "Add Arrays", 11, "To Do");
+        taskManager.addTask("Samantha Paulson", "Create Reports", 2, "Done");
+
+        // Check longest task
+        assertEquals("Glenda Oberholzer", taskManager.developers.get(0));
+        assertEquals(11, taskManager.taskDurations.get(0));
+    }
+
+    @Test
+    void testSearchTaskByName() {
+        Task taskManager = new Task();
+        taskManager.addTask("Mike Smith", "Create Login", 5, "To Do");
+        taskManager.searchTaskByName("Create Login");
+        assertTrue(taskManager.taskNames.contains("Create Login"));
+    }
+}
+
+}
