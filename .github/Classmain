@@ -1,0 +1,239 @@
+ import java.util.ArrayList;
+import java.util.Scanner;
+
+// Login Class
+class Login {
+    private final ArrayList<User> users = new ArrayList<>();
+
+    // Register a new user
+    public boolean registerUser(String username, String password) {
+        if (!validateUsername(username)) return false;
+        if (!validatePassword(password)) return false;
+
+        users.add(new User(username, password));
+        System.out.println("User registered successfully!");
+        return true;
+    }
+
+    // Validate username
+    private boolean validateUsername(String username) {
+        if (username.length() > 6) {
+            System.out.println("Username must not exceed 6 characters.");
+            return false;
+        }
+        if (!username.contains("_")) {
+            System.out.println("Username must contain an underscore.");
+            return false;
+        }
+        return true;
+    }
+
+    // Validate password
+    private boolean validatePassword(String password) {
+        if (password.length() < 8 || password.length() > 11) {
+            System.out.println("Password must be between 8 to 11 characters.");
+            return false;
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            System.out.println("Password must contain an uppercase letter.");
+            return false;
+        }
+        if (!password.matches(".*[a-z].*")) {
+            System.out.println("Password must contain a lowercase letter.");
+            return false;
+        }
+        if (!password.matches(".*\\d.*")) {
+            System.out.println("Password must contain a digit.");
+            return false;
+        }
+        if (!password.matches(".*[!@#$%^&*()].*")) {
+            System.out.println("Password must contain a special character.");
+            return false;
+        }
+        return true;
+    }
+
+    // Login a user
+    public boolean loginUser(String username, String password) {
+        for (User user : users) {
+            if (user.username.equals(username) && user.password.equals(password)) {
+                System.out.println("Login successful! Welcome, " + username + "!");
+                return true;
+            }
+        }
+        System.out.println("Invalid username or password.");
+        return false;
+    }
+
+    static class User {
+        String username, password;
+
+        User(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+    }
+}
+
+// Task Class
+class Task {
+    final ArrayList<String> developers = new ArrayList<>();
+    final ArrayList<String> taskNames = new ArrayList<>();
+    final ArrayList<String> taskIDs = new ArrayList<>();
+    final ArrayList<Integer> taskDurations = new ArrayList<>();
+    final ArrayList<String> taskStatuses = new ArrayList<>();
+    private int taskCounter = 0;
+
+    // Add a new task
+    public void addTask(String developer, String name, int duration, String status) {
+        String taskId = "TASK" + (++taskCounter);
+        developers.add(developer);
+        taskNames.add(name);
+        taskIDs.add(taskId);
+        taskDurations.add(duration);
+        taskStatuses.add(status);
+        System.out.println("Task added successfully: " + taskId);
+    }
+
+    // Display tasks with status "Done"
+    public void displayDoneTasks() {
+        System.out.println("Tasks with status 'Done':");
+        for (int i = 0; i < taskStatuses.size(); i++) {
+            if (taskStatuses.get(i).equalsIgnoreCase("Done")) {
+                System.out.println("Developer: " + developers.get(i) +
+                        ", Task Name: " + taskNames.get(i) +
+                        ", Duration: " + taskDurations.get(i) + " hours");
+            }
+        }
+    }
+
+    // Display task with the longest duration
+    public void displayLongestTask() {
+        if (taskDurations.isEmpty()) {
+            System.out.println("No tasks available.");
+            return;
+        }
+        int maxIndex = 0;
+        for (int i = 1; i < taskDurations.size(); i++) {
+            if (taskDurations.get(i) > taskDurations.get(maxIndex)) {
+                maxIndex = i;
+            }
+        }
+        System.out.println("Task with the longest duration: Developer: " +
+                developers.get(maxIndex) + ", Duration: " + taskDurations.get(maxIndex) + " hours");
+    }
+
+    // Search task by name
+    public void searchTaskByName(String name) {
+        for (int i = 0; i < taskNames.size(); i++) {
+            if (taskNames.get(i).equalsIgnoreCase(name)) {
+                System.out.println("Task found: Developer: " + developers.get(i) +
+                        ", Task Name: " + taskNames.get(i) +
+                        ", Status: " + taskStatuses.get(i));
+                return;
+            }
+        }
+        System.out.println("Task not found.");
+    }
+
+    // Search tasks by developer
+    public void searchTasksByDeveloper(String developer) {
+        System.out.println("Tasks for developer " + developer + ":");
+        for (int i = 0; i < developers.size(); i++) {
+            if (developers.get(i).equalsIgnoreCase(developer)) {
+                System.out.println("Task Name: " + taskNames.get(i) +
+                        ", Status: " + taskStatuses.get(i));
+            }
+        }
+    }
+
+    // Delete task by name
+    public void deleteTask(String name) {
+        for (int i = 0; i < taskNames.size(); i++) {
+            if (taskNames.get(i).equalsIgnoreCase(name)) {
+                developers.remove(i);
+                taskNames.remove(i);
+                taskIDs.remove(i);
+                taskDurations.remove(i);
+                taskStatuses.remove(i);
+                System.out.println("Task '" + name + "' deleted successfully.");
+                return;
+            }
+        }
+        System.out.println("Task not found.");
+    }
+
+    // Display report
+    public void displayReport() {
+        System.out.println("All tasks:");
+        for (int i = 0; i < taskNames.size(); i++) {
+            System.out.println("Task ID: " + taskIDs.get(i) +
+                    ", Developer: " + developers.get(i) +
+                    ", Task Name: " + taskNames.get(i) +
+                    ", Duration: " + taskDurations.get(i) +
+                    ", Status: " + taskStatuses.get(i));
+        }
+    }
+}
+
+// Main Class
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Login login = new Login();
+        Task taskManager = new Task();
+
+        // Populate initial data
+        taskManager.addTask("Mike Smith", "Create Login", 5, "To Do");
+        taskManager.addTask("Edward Harrington", "Create Add Features", 8, "Doing");
+        taskManager.addTask("Samantha Paulson", "Create Reports", 2, "Done");
+        taskManager.addTask("Glenda Oberholzer", "Add Arrays", 11, "To Do");
+
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Display Done Tasks");
+            System.out.println("2. Display Longest Task");
+            System.out.println("3. Search Task by Name");
+            System.out.println("4. Search Tasks by Developer");
+            System.out.println("5. Delete Task");
+            System.out.println("6. Display Report");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> taskManager.displayDoneTasks();
+                case 2 -> taskManager.displayLongestTask();
+                case 3 -> {
+                    System.out.print("Enter task name: ");
+                    String name = scanner.nextLine();
+                    taskManager.searchTaskByName(name);
+                }
+                case 4 -> {
+                    System.out.print("Enter developer name: ");
+                    String developer = scanner.nextLine();
+                    taskManager.searchTasksByDeveloper(developer);
+                }
+                case 5 -> {
+                    System.out.print("Enter task name to delete: ");
+                    String name = scanner.nextLine();
+                    taskManager.deleteTask(name);
+                }
+                case 6 -> taskManager.displayReport();
+                case 7 -> {
+                    System.out.println("Exiting...");
+                    running = false;
+                }
+                default -> System.out.println("Invalid choice. Try again.");
+            }
+        }
+        scanner.close();
+    }
+}
+
+    }
+
